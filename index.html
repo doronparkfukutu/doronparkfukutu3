@@ -31,10 +31,10 @@
         
         body { background-color: #05060a; color: #fff; font-family: "Zen Kaku Gothic New", sans-serif; overflow-x: hidden; }
         
-        /* 背景キャンバス */
+        /* Background Starfield */
         #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, #0f172a 0%, #000 100%); }
 
-        /* ガラスパネル */
+        /* Glass Panel */
         .glass-panel { 
             background: rgba(20, 20, 35, 0.8); 
             backdrop-filter: blur(12px); 
@@ -73,14 +73,14 @@
             width: 100%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
             color: white; font-weight: 900; padding: 1.2rem; border-radius: 1rem; 
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); transition: 0.3s; text-align: center; display: block; 
-            font-size: 1.2rem;
+            font-size: 1.2rem; border: none; cursor: pointer;
         }
         .btn-action:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
 
         .embed-responsive { position: relative; width: 100%; height: 450px; border-radius: 1.5rem; overflow: hidden; border: 2px solid #333; }
         .embed-responsive iframe { width: 100%; height: 100%; border: 0; }
         
-        /* 前衛的ギャラリーデザイン */
+        /* Gallery Design */
         .gallery-container {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -118,8 +118,8 @@
             filter: grayscale(0%) contrast(100%);
         }
 
-        /* 複雑なグリッド配置 */
-        .g-1 { grid-column: span 6; grid-row: span 5; } /* park1.jpg メイン */
+        /* Grid Layout */
+        .g-1 { grid-column: span 6; grid-row: span 5; }
         .g-2 { grid-column: span 3; grid-row: span 3; } 
         .g-3 { grid-column: span 3; grid-row: span 2; }
         .g-4 { grid-column: span 3; grid-row: span 3; }
@@ -182,7 +182,7 @@
             </div>
         </section>
 
-        <!-- 2. PHOTO GALLERY (前衛的コラージュレイアウト) -->
+        <!-- 2. PHOTO GALLERY -->
         <section id="gallery" class="mb-24 overflow-hidden px-2">
             <h2 class="section-title text-neon-gold" data-aos="fade-down">PHOTO GALLERY</h2>
             <div class="gallery-container" data-aos="fade-up">
@@ -251,7 +251,7 @@
                 <div class="border-t border-white/10 pt-4 mt-4">
                     <p class="text-lg font-bold">
                         一等二等国家資格練習の場合、登録講習機関に所属する<br>
-                        <span class="text-neon-blue font-black text-xl">講習指導員による指導可能（オプション）</span>
+                        <span class="text-neon-blue font-black text-xl">講習指導員による指導 possible（オプション）</span>
                     </p>
                     <p class="text-sm text-gray-400 mt-2">※夜間飛行については応談</p>
                 </div>
@@ -321,63 +321,63 @@
         <section id="reserve" class="mb-24">
             <div class="glass-panel border-2 border-neon-blue !bg-black/90 p-8" data-aos="zoom-in-up">
                 <h2 class="text-3xl font-black text-center mb-8 text-neon-blue tracking-widest">RESERVATION</h2>
-                <form>
+                <form id="reservationForm">
                     <div class="grid md:grid-cols-2 gap-4">
                         <div data-aos="fade-right" data-aos-delay="100">
-                            <label class="label-text">氏名</label>
-                            <input type="text" class="input-field" placeholder="お名前">
+                            <label class="block text-xs font-bold text-neon-blue mb-1">氏名</label>
+                            <input type="text" id="name" class="input-field" placeholder="お名前" required>
                         </div>
                         <div data-aos="fade-left" data-aos-delay="100">
-                            <label class="label-text">年齢</label>
-                            <input type="number" class="input-field" placeholder="年齢">
+                            <label class="block text-xs font-bold text-neon-blue mb-1">年齢</label>
+                            <input type="number" id="age" class="input-field" placeholder="年齢" required>
                         </div>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="200">
-                        <label class="label-text">住所</label>
-                        <input type="text" class="input-field" placeholder="ご住所">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">住所</label>
+                        <input type="text" id="address" class="input-field" placeholder="ご住所" required>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="300">
-                        <label class="label-text">連絡先電話番号</label>
-                        <input type="tel" class="input-field" placeholder="090-0000-0000">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">連絡先電話番号</label>
+                        <input type="tel" id="tel" class="input-field" placeholder="090-0000-0000" required>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="400">
-                        <label class="label-text">ドローン保有資格</label>
-                        <select class="input-field text-gray-900 font-bold">
-                            <option>▼ 民間資格</option>
-                            <option>▼ 国家資格（二等）</option>
-                            <option>▼ 国家資格（一等）</option>
-                            <option>▼ 資格なし</option>
+                        <label class="block text-xs font-bold text-neon-blue mb-1">ドローン保有資格</label>
+                        <select id="license" class="input-field text-gray-400 font-bold bg-black">
+                            <option value="民間資格">▼ 民間資格</option>
+                            <option value="国家資格（二等）">▼ 国家資格（二等）</option>
+                            <option value="国家資格（一等）">▼ 国家資格（一等）</option>
+                            <option value="資格なし">▼ 資格なし</option>
                         </select>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="500">
-                        <label class="label-text">ご希望日</label>
-                        <input type="date" class="input-field text-gray-900 font-bold">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">ご希望日</label>
+                        <input type="date" id="date" class="input-field text-gray-400 font-bold bg-black" required>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="600">
-                        <label class="label-text">希望練習種類</label>
-                        <select class="input-field text-gray-900 font-bold">
-                            <option>▼ 一等国家資格練習</option>
-                            <option>▼ 撮影ドローン</option>
-                            <option>▼ 農薬散布練習</option>
-                            <option>▼ FPV練習</option>
+                        <label class="block text-xs font-bold text-neon-blue mb-1">希望練習種類</label>
+                        <select id="type" class="input-field text-gray-400 font-bold bg-black">
+                            <option value="一等国家資格練習">▼ 一等国家資格練習</option>
+                            <option value="撮影ドローン">▼ 撮影ドローン</option>
+                            <option value="農薬散布練習">▼ 農薬散布練習</option>
+                            <option value="FPV練習">▼ FPV練習</option>
                         </select>
                     </div>
 
                     <div data-aos="fade-up" data-aos-delay="700">
-                        <label class="label-text mt-4 text-neon-cyan">希望オプション（複数選択可）</label>
-                        <div class="bg-white/5 p-4 rounded-xl mb-6 grid grid-cols-1 gap-2 border border-white/20">
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" class="w-5 h-5 accent-blue-500"> 機体レンタル（Phantom 4 / Mavic 3 Pro / Air 3 / Avata 2 / Mini / トイドローン）</label>
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" class="w-5 h-5 accent-blue-500"> 指導員レクチャー</label>
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" class="w-5 h-5 accent-blue-500"> 夜間飛行</label>
+                        <label class="block text-xs font-bold text-neon-cyan mt-4 mb-2">希望オプション（複数選択可）</label>
+                        <div id="options" class="bg-white/5 p-4 rounded-xl mb-6 grid grid-cols-1 gap-2 border border-white/20">
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="機体レンタル" class="w-5 h-5 accent-blue-500"> 機体レンタル（Phantom 4 / Mavic 3 Pro / Air 3 / Avata 2 / Mini / トイドローン）</label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="指導員レクチャー" class="w-5 h-5 accent-blue-500"> 指導員レクチャー</label>
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="夜間飛行" class="w-5 h-5 accent-blue-500"> 夜間飛行</label>
                         </div>
                     </div>
 
-                    <button class="btn-action text-xl mt-4">予約リクエスト</button>
+                    <button type="submit" class="btn-action text-xl mt-4">予約リクエスト</button>
                 </form>
             </div>
         </section>
@@ -398,8 +398,8 @@
                     <p class="text-neon-purple font-black text-xl mb-4">【運営元連絡先】</p>
                     <p class="text-lg font-bold mb-2">株式会社 青プロ</p>
                     <p class="text-gray-300 text-sm leading-relaxed">
-                        福岡県北九州市八幡東区・・<br>
-                        電話：〇〇〇-〇〇〇〇-〇〇〇〇<br>
+                        福岡県北九州市八幡東区<br>
+                        電話：070-8307-9731<br>
                         Email: doronparkfukutu2@gmail.com
                     </p>
                 </div>
@@ -420,7 +420,54 @@
             once: false,
             mirror: true
         });
+
+        // 送信先を show1180@rakumail.jp に固定
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const address = document.getElementById('address').value;
+            const tel = document.getElementById('tel').value;
+            const license = document.getElementById('license').value;
+            const date = document.getElementById('date').value;
+            const type = document.getElementById('type').value;
+            
+            const options = Array.from(document.querySelectorAll('#options input:checked'))
+                                 .map(cb => cb.value)
+                                 .join('、') || 'なし';
+
+            // 固定の送信先メールアドレス
+            const email = 'show1180@rakumail.jp';
+            const subject = encodeURIComponent(`【予約リクエスト】ドローンパーク福津：${name}様`);
+            const body = encodeURIComponent(
+                `ドローンパーク福津 予約リクエストメール\n\n` +
+                `------------------------------------\n` +
+                `氏名：${name}\n` +
+                `年齢：${age}歳\n` +
+                `住所：${address}\n` +
+                `連絡先：${tel}\n\n` +
+                `希望日：${date}\n` +
+                `保有資格：${license}\n` +
+                `練習種類：${type}\n` +
+                `希望オプション：${options}\n` +
+                `------------------------------------\n\n` +
+                `※このメールは予約リクエストです。管理者からの連絡をもって予約確定となります。`
+            );
+
+            // メーラーを起動
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+            // 1秒後にカレンダーまでスクロールして状況を確認できるようにする
+            setTimeout(() => {
+                const calendarSection = document.getElementById('calendar');
+                if (calendarSection) {
+                    calendarSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 1000);
+        });
         
+        // 背景の星空
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let width, height, stars = [];
