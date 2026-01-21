@@ -159,13 +159,45 @@
         .neon-text-gold {
             text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.4);
         }
+
+        /* 🎵 Music Button Style */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+        #music-control:hover {
+            background: rgba(59, 130, 246, 0.6);
+            transform: scale(1.1);
+        }
+        #music-control i { color: white; font-size: 1.2rem; }
     </style>
 </head>
-<body>
+<body onclick="initAudio()">
 
     <canvas id="starfield"></canvas>
 
-    <!-- Navigation -->
+    <audio id="bgm" loop>
+        <source src="DoronparkFukutu.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-control" onclick="toggleMusic(event)">
+        <i id="music-icon" class="fas fa-music"></i>
+    </div>
+
     <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <span class="text-xl font-black italic tracking-tighter uppercase font-cyber text-neon-blue" data-aos="fade-right">DRONE PARK FUKUTSU</span>
@@ -180,7 +212,6 @@
 
     <div class="max-w-5xl mx-auto px-6 pt-28 pb-20">
 
-        <!-- 1. HERO -->
         <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div class="inline-block mb-4 px-4 py-1 border border-neon-blue text-neon-blue text-xs font-black tracking-widest uppercase rounded-full">New Open in Fukutsu</div>
             <h1 class="text-4xl md:text-7xl font-black leading-tight mb-8 italic">
@@ -195,7 +226,6 @@
             </div>
         </section>
 
-        <!-- PRE-OPEN ANNOUNCEMENT -->
         <section class="text-center mb-16" data-aos="zoom-in" data-aos-delay="600">
             <div class="inline-block border-2 border-neon-gold px-8 py-4 rounded-2xl bg-neon-gold/5">
                 <h3 class="text-4xl md:text-6xl font-black text-neon-gold italic tracking-wider font-cyber neon-text-gold">
@@ -205,7 +235,6 @@
             </div>
         </section>
 
-        <!-- 2. PHOTO GALLERY -->
         <section id="gallery" class="mb-24 overflow-hidden px-2">
             <h2 class="section-title text-neon-gold" data-aos="fade-down">PHOTO GALLERY</h2>
             <div class="gallery-container" data-aos="fade-up">
@@ -237,7 +266,6 @@
             </div>
         </section>
 
-        <!-- 3. MAP -->
         <section id="map" class="mb-24">
             <h2 class="section-title text-neon-gold" data-aos="zoom-in">ACCESS MAP</h2>
             <div class="embed-responsive shadow-[0_0_30px_rgba(251,191,36,0.2)] border-neon-gold" data-aos="fade-up">
@@ -246,7 +274,6 @@
             <p class="text-center mt-6 text-xl font-bold" data-aos="fade-up">〒811-3302 福岡県福津市大石字内野</p>
         </section>
 
-        <!-- 4. FEATURES -->
         <section id="about" class="mb-24">
             <h2 class="section-title" data-aos="fade-up">FEATURES</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-center">
@@ -281,7 +308,6 @@
             </div>
         </section>
 
-        <!-- 5. PRICING -->
         <section id="pricing" class="mb-24">
             <h2 class="section-title" data-aos="fade-up">UTILIZATION RATES</h2>
             <div class="glass-panel text-center border-2 border-neon-blue mb-8" data-aos="fade-up">
@@ -316,7 +342,6 @@
             </div>
         </section>
 
-        <!-- 6. MACHINE RENTAL -->
         <section id="rental" class="mb-24">
             <h2 class="section-title" data-aos="fade-up">RENTAL</h2>
             <div class="glass-panel" data-aos="fade-up">
@@ -332,7 +357,6 @@
             </div>
         </section>
 
-        <!-- 7. CALENDAR -->
         <section id="calendar" class="mb-24 text-center">
             <h2 class="section-title text-neon-gold" data-aos="fade-down">CALENDAR</h2>
             <div class="glass-panel !p-2 bg-white rounded-[2rem] overflow-hidden border-4 border-neon-gold" data-aos="fade-up">
@@ -340,7 +364,6 @@
             </div>
         </section>
 
-        <!-- 8. RESERVATION FORM -->
         <section id="reserve" class="mb-24">
             <div class="glass-panel border-2 border-neon-blue !bg-black/90 p-8" data-aos="zoom-in-up">
                 <h2 class="text-3xl font-black text-center mb-8 text-neon-blue tracking-widest">RESERVATION</h2>
@@ -412,7 +435,6 @@
             </div>
         </section>
 
-        <!-- 9. FOOTER INFO -->
         <section class="mb-20">
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-panel p-6 border-t-4 border-t-neon-blue" data-aos="fade-right">
@@ -442,7 +464,6 @@
 
     </div>
 
-    <!-- AOS & Animation Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ 
@@ -450,6 +471,42 @@
             once: false,
             mirror: true
         });
+
+        // 🎵 MUSIC CONTROL SCRIPT
+        const bgm = document.getElementById('bgm');
+        const mIcon = document.getElementById('music-icon');
+        let hasInteracted = false;
+
+        function initAudio() {
+            if (!hasInteracted) {
+                playMusic();
+                hasInteracted = true;
+            }
+        }
+
+        function playMusic() {
+            bgm.play().then(() => {
+                mIcon.className = 'fas fa-volume-up';
+                // 2分後に停止するタイマー
+                setTimeout(() => {
+                    bgm.pause();
+                    mIcon.className = 'fas fa-music';
+                }, 120000); // 120000ms = 2分
+            }).catch(e => {
+                console.log("Audio play blocked until interaction");
+            });
+        }
+
+        function toggleMusic(e) {
+            e.stopPropagation();
+            if (bgm.paused) {
+                bgm.play();
+                mIcon.className = 'fas fa-volume-up';
+            } else {
+                bgm.pause();
+                mIcon.className = 'fas fa-music';
+            }
+        }
 
         // Toggle Reservation Button based on agreement
         function toggleSubmitButton() {
