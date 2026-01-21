@@ -27,7 +27,7 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
         
         body { background-color: #05060a; color: #fff; font-family: "Zen Kaku Gothic New", sans-serif; overflow-x: hidden; }
         
@@ -75,7 +75,15 @@
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); transition: 0.3s; text-align: center; display: block; 
             font-size: 1.2rem; border: none; cursor: pointer;
         }
-        .btn-action:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        .btn-action:hover:not(:disabled) { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        .btn-action:disabled { 
+            background: #2d3748 !important; 
+            color: #718096 !important; 
+            cursor: not-allowed; 
+            box-shadow: none; 
+            transform: none;
+            opacity: 0.6;
+        }
 
         .embed-responsive { position: relative; width: 100%; height: 450px; border-radius: 1.5rem; overflow: hidden; border: 2px solid #333; }
         .embed-responsive iframe { width: 100%; height: 100%; border: 0; }
@@ -146,6 +154,11 @@
             100% { transform: translateY(0px); }
         }
         .float-anim { animation: float 4s ease-in-out infinite; }
+
+        /* Special Neon Glow for Pre-open */
+        .neon-text-gold {
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -168,7 +181,7 @@
     <div class="max-w-5xl mx-auto px-6 pt-28 pb-20">
 
         <!-- 1. HERO -->
-        <section class="text-center mb-20" data-aos="zoom-out" data-aos-duration="1500">
+        <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div class="inline-block mb-4 px-4 py-1 border border-neon-blue text-neon-blue text-xs font-black tracking-widest uppercase rounded-full">New Open in Fukutsu</div>
             <h1 class="text-4xl md:text-7xl font-black leading-tight mb-8 italic">
                 福岡県福津市に<br>
@@ -179,6 +192,15 @@
                     世界遺産「新原・奴山古墳群」近くの<br>
                     <span class="text-neon-cyan">広大なDID地区外エリア（5,000坪）</span>
                 </p>
+            </div>
+        </section>
+
+        <!-- PRE-OPEN ANNOUNCEMENT -->
+        <section class="text-center mb-16" data-aos="zoom-in" data-aos-delay="600">
+            <div class="inline-block border-2 border-neon-gold px-8 py-4 rounded-2xl bg-neon-gold/5">
+                <h3 class="text-4xl md:text-6xl font-black text-neon-gold italic tracking-wider font-cyber neon-text-gold">
+                    2月14日プレオープン！
+                </h3>
             </div>
         </section>
 
@@ -235,12 +257,12 @@
                     <i class="fas fa-camera text-3xl text-neon-cyan mb-2"></i>
                     <p class="font-bold">撮影ドローン</p>
                 </div>
-                <div class="glass-panel p-4 border border-white/30 flex flex-col items-center justify-center h-full opacity-80" data-aos="flip-left" data-aos-delay="300">
-                    <i class="fas fa-spray-can text-3xl mb-2"></i>
+                <div class="glass-panel p-4 border border-neon-gold flex flex-col items-center justify-center h-full" data-aos="flip-left" data-aos-delay="300">
+                    <i class="fas fa-spray-can text-3xl text-neon-gold mb-2"></i>
                     <p class="font-bold">農薬散布練習</p>
                 </div>
-                <div class="glass-panel p-4 border border-white/30 flex flex-col items-center justify-center h-full opacity-80" data-aos="flip-left" data-aos-delay="400">
-                    <i class="fas fa-gamepad text-3xl mb-2"></i>
+                <div class="glass-panel p-4 border border-neon-purple flex flex-col items-center justify-center h-full" data-aos="flip-left" data-aos-delay="400">
+                    <i class="fas fa-gamepad text-3xl text-neon-purple mb-2"></i>
                     <p class="font-bold">FPV練習</p>
                 </div>
             </div>
@@ -251,7 +273,7 @@
                 <div class="border-t border-white/10 pt-4 mt-4">
                     <p class="text-lg font-bold">
                         一等二等国家資格練習の場合、登録講習機関に所属する<br>
-                        <span class="text-neon-blue font-black text-xl">講習指導員による指導 possible（オプション）</span>
+                        <span class="text-neon-blue font-black text-xl">講習指導員による指導可能（オプション）</span>
                     </p>
                     <p class="text-sm text-gray-400 mt-2">※夜間飛行については応談</p>
                 </div>
@@ -346,10 +368,10 @@
                     <div data-aos="fade-up" data-aos-delay="400">
                         <label class="block text-xs font-bold text-neon-blue mb-1">ドローン保有資格</label>
                         <select id="license" class="input-field text-gray-400 font-bold bg-black">
-                            <option value="民間資格">▼ 民間資格</option>
-                            <option value="国家資格（二等）">▼ 国家資格（二等）</option>
-                            <option value="国家資格（一等）">▼ 国家資格（一等）</option>
-                            <option value="資格なし">▼ 資格なし</option>
+                            <option value="▼ 民間資格">▼ 民間資格</option>
+                            <option value="▼ 国家資格（二等）">▼ 国家資格（二等）</option>
+                            <option value="▼ 国家資格（一等）">▼ 国家資格（一等）</option>
+                            <option value="▼ 資格なし">▼ 資格なし</option>
                         </select>
                     </div>
 
@@ -361,23 +383,30 @@
                     <div data-aos="fade-up" data-aos-delay="600">
                         <label class="block text-xs font-bold text-neon-blue mb-1">希望練習種類</label>
                         <select id="type" class="input-field text-gray-400 font-bold bg-black">
-                            <option value="一等国家資格練習">▼ 一等国家資格練習</option>
-                            <option value="撮影ドローン">▼ 撮影ドローン</option>
-                            <option value="農薬散布練習">▼ 農薬散布練習</option>
-                            <option value="FPV練習">▼ FPV練習</option>
+                            <option value="▼ 一等国家資格練習">▼ 一等国家資格練習</option>
+                            <option value="▼ 撮影ドローン">▼ 撮影ドローン</option>
+                            <option value="▼ 農薬散布練習">▼ 農薬散布練習</option>
+                            <option value="▼ FPV練習">▼ FPV練習</option>
                         </select>
                     </div>
 
-                    <div data-aos="fade-up" data-aos-delay="700">
-                        <label class="block text-xs font-bold text-neon-cyan mt-4 mb-2">希望オプション（複数選択可）</label>
-                        <div id="options" class="bg-white/5 p-4 rounded-xl mb-6 grid grid-cols-1 gap-2 border border-white/20">
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="機体レンタル" class="w-5 h-5 accent-blue-500"> 機体レンタル（Phantom 4 / Mavic 3 Pro / Air 3 / Avata 2 / Mini / トイドローン）</label>
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="指導員レクチャー" class="w-5 h-5 accent-blue-500"> 指導員レクチャー</label>
-                            <label class="flex items-center gap-2 cursor-pointer hover:text-neon-cyan transition"><input type="checkbox" value="夜間飛行" class="w-5 h-5 accent-blue-500"> 夜間飛行</label>
+                    <div class="mb-8" data-aos="fade-up" data-aos-delay="700">
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/20 text-sm font-bold text-gray-300 leading-relaxed">
+                            <p class="mb-2 text-neon-gold border-b border-neon-gold pb-1 inline-block">【ご利用規約・注意事項】</p>
+                            <ul class="list-decimal list-inside space-y-1">
+                                <li>機体登録、リモートID、飛行許可申請や飛行計画通報等、飛行に必要な国土交通省（DIPS2.0）への申請は事前に済ませておいて下さい。</li>
+                                <li>風速など、利用者様の申請済み飛行マニュアルは厳守のこと。</li>
+                                <li>機体の保険は事前に必ず入って下さい。</li>
+                                <li>ドローン機体の事故に関しては全て自己責任です。</li>
+                            </ul>
+                            <div class="mt-4 flex items-center justify-center gap-2">
+                                <input type="checkbox" id="agreement" class="w-5 h-5 accent-blue-500 cursor-pointer" onchange="toggleSubmitButton()">
+                                <label for="agreement" class="cursor-pointer hover:text-white">上記規約に同意して予約します</label>
+                            </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-action text-xl mt-4">予約リクエスト</button>
+                    <button type="submit" id="submitBtn" class="btn-action text-xl mt-4 w-full" disabled>予約リクエスト</button>
                 </form>
             </div>
         </section>
@@ -398,8 +427,8 @@
                     <p class="text-neon-purple font-black text-xl mb-4">【運営元連絡先】</p>
                     <p class="text-lg font-bold mb-2">株式会社 青プロ</p>
                     <p class="text-gray-300 text-sm leading-relaxed">
-                        福岡県北九州市八幡東区<br>
-                        電話：070-8307-9731<br>
+                        福岡県北九州市八幡東区・・<br>
+                        電話：〇〇〇-〇〇〇〇-〇〇〇〇<br>
                         Email: doronparkfukutu2@gmail.com
                     </p>
                 </div>
@@ -421,10 +450,21 @@
             mirror: true
         });
 
-        // 送信先を show1180@rakumail.jp に固定
+        // Toggle Reservation Button based on agreement
+        function toggleSubmitButton() {
+            const agreement = document.getElementById('agreement');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !agreement.checked;
+        }
+
+        // Reservation Form Submission Logic
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            if (!document.getElementById('agreement').checked) {
+                return;
+            }
+
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
             const address = document.getElementById('address').value;
@@ -433,11 +473,6 @@
             const date = document.getElementById('date').value;
             const type = document.getElementById('type').value;
             
-            const options = Array.from(document.querySelectorAll('#options input:checked'))
-                                 .map(cb => cb.value)
-                                 .join('、') || 'なし';
-
-            // 固定の送信先メールアドレス
             const email = 'show1180@rakumail.jp';
             const subject = encodeURIComponent(`【予約リクエスト】ドローンパーク福津：${name}様`);
             const body = encodeURIComponent(
@@ -450,15 +485,13 @@
                 `希望日：${date}\n` +
                 `保有資格：${license}\n` +
                 `練習種類：${type}\n` +
-                `希望オプション：${options}\n` +
                 `------------------------------------\n\n` +
+                `※上記規約に同意済み\n` +
                 `※このメールは予約リクエストです。管理者からの連絡をもって予約確定となります。`
             );
 
-            // メーラーを起動
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 
-            // 1秒後にカレンダーまでスクロールして状況を確認できるようにする
             setTimeout(() => {
                 const calendarSection = document.getElementById('calendar');
                 if (calendarSection) {
@@ -467,7 +500,7 @@
             }, 1000);
         });
         
-        // 背景の星空
+        // Starfield background logic
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let width, height, stars = [];
