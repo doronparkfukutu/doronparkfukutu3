@@ -1,3 +1,5 @@
+最終コード
+
 <!DOCTYPE html>
 <html lang="ja" class="dark">
 <head>
@@ -162,6 +164,18 @@
     </style>
 </head>
 <body>
+<audio id="bgm" loop preload="auto">
+  <source src="DoronparkFukutu.mp3" type="audio/mpeg">
+</audio>
+
+<div id="bgmStart"
+     style="position:fixed;inset:0;background:rgba(0,0,0,.85);
+            z-index:9999;display:flex;align-items:center;
+            justify-content:center;font-size:1.6rem;
+            font-weight:900;letter-spacing:.25em;
+            cursor:pointer;color:white;">
+  CLICK TO START
+</div>
 
     <canvas id="starfield"></canvas>
 
@@ -518,37 +532,49 @@
         }
 
         function animate() {
-            ctx.fillStyle = '#05060a';
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#ffffff';
-            
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
-                star.z -= 12; 
+    ctx.fillStyle = '#05060a';
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = '#ffffff';
 
-                if (star.z <= 0) {
-                    star.z = width;
-                    star.x = Math.random() * width - width / 2;
-                    star.y = Math.random() * height - height / 2;
-                }
+    for (let i = 0; i < stars.length; i++) {
+        let star = stars[i];
+        star.z -= 8;
 
-                let k = 128.0 / star.z;
-                let px = star.x * k + width / 2;
-                let py = star.y * k + height / 2;
-                let size = (1 - star.z / width) * 2; 
-
-                if (px >= 0 && px <= width && py >= 0 && py <= height) {
-                    ctx.beginPath();
-                    ctx.arc(px, py, size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-            requestAnimationFrame(animate);
+        if (star.z < 1) {
+            star.z = width;
+            star.x = Math.random() * width - width / 2;
+            star.y = Math.random() * height - height / 2;
         }
+
+        let k = 128.0 / star.z;
+        let px = star.x * k + width / 2;
+        let py = star.y * k + height / 2;
+
+        let size = Math.max(0.5, (1 - star.z / width) * 2);
+
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+            ctx.beginPath();
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    requestAnimationFrame(animate);
+}
 
         window.addEventListener('resize', init);
         init();
         animate();
+const bgm = document.getElementById('bgm');
+const bgmStart = document.getElementById('bgmStart');
+
+bgm.volume = 0.35;
+
+bgmStart.addEventListener('click', () => {
+  bgm.play().then(() => {
+    bgmStart.style.display = 'none';
+  });
+});
+
     </script>
 </body>
 </html>
