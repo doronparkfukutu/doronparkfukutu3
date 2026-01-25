@@ -155,6 +155,7 @@
         }
         .float-anim { animation: float 4s ease-in-out infinite; }
 
+        /* Special Neon Glow for Pre-open */
         .neon-text-gold {
             text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.4);
         }
@@ -275,7 +276,7 @@
                 <div class="border-t border-white/10 pt-4 mt-4">
                     <p class="text-lg font-bold">
                         一等二等国家資格練習の場合、登録講習機関に所属する<br>
-                        <span class="text-neon-blue font-black text-xl">講習指導員による指導可能（オプション）</span>
+                        <span class="text-neon-blue font-black text-xl">講習指導員による指導 possible（オプション）</span>
                     </p>
                     <p class="text-sm text-gray-400 mt-2">※夜間飛行については応談</p>
                 </div>
@@ -446,15 +447,20 @@
             mirror: true
         });
 
+        // Toggle Reservation Button based on agreement
         function toggleSubmitButton() {
             const agreement = document.getElementById('agreement');
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = !agreement.checked;
         }
 
+        // Reservation Form Submission Logic
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if (!document.getElementById('agreement').checked) return;
+            
+            if (!document.getElementById('agreement').checked) {
+                return;
+            }
 
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
@@ -482,15 +488,22 @@
             );
 
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+            setTimeout(() => {
+                const calendarSection = document.getElementById('calendar');
+                if (calendarSection) {
+                    calendarSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 1000);
         });
         
-        // Starfield background logic - Optimized for Mobile Width
+        // Starfield background logic - Adjusted for correct viewport width
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let width, height, stars = [];
         
         function init() {
-            // ここで画面幅を正確に取得し、ズレを解消します
+            // ここを修正：window.innerWidth の代わりに clientWidth を使用
             width = document.documentElement.clientWidth;
             height = window.innerHeight;
             canvas.width = width;
