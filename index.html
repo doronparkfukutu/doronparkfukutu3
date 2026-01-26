@@ -85,6 +85,7 @@
             opacity: 0.6;
         }
 
+        /* Fixed map responsiveness */
         .embed-responsive { position: relative; width: 100%; height: 450px; border-radius: 1.5rem; overflow: hidden; border: 2px solid #333; }
         .embed-responsive iframe { width: 100%; height: 100%; border: 0; }
         
@@ -188,7 +189,7 @@
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20">
+    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20 overflow-x-hidden">
 
         <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div class="inline-block mb-4 px-4 py-1 border border-neon-blue text-neon-blue text-xs font-black tracking-widest uppercase rounded-full">New Open in Fukutsu</div>
@@ -249,8 +250,8 @@
             <h2 class="section-title text-neon-gold" data-aos="zoom-in">ACCESS MAP</h2>
             <div class="embed-responsive shadow-[0_0_30px_rgba(251,191,36,0.2)] border-neon-gold" data-aos="fade-up">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3314.996160167232!2d130.4804711757065!3d33.808208973248384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDQ4JzI5LjYiTiAxMzDCsDI4JzU5LjAiRQ!5e0!3m2!1sja!2sjp!4v1707000000000!5m2!1sja!2sjp" 
-                    width="600" 
+                    src="https://maps.google.com/maps?q=33.808209,130.483046&hl=ja&z=17&output=embed" 
+                    width="100%" 
                     height="450" 
                     style="border:0;" 
                     allowfullscreen="" 
@@ -459,20 +460,15 @@
             mirror: true
         });
 
-        // Toggle Reservation Button based on agreement
         function toggleSubmitButton() {
             const agreement = document.getElementById('agreement');
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = !agreement.checked;
         }
 
-        // Reservation Form Submission Logic
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            if (!document.getElementById('agreement').checked) {
-                return;
-            }
+            if (!document.getElementById('agreement').checked) return;
 
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
@@ -500,12 +496,9 @@
             );
 
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-
             setTimeout(() => {
                 const calendarSection = document.getElementById('calendar');
-                if (calendarSection) {
-                    calendarSection.scrollIntoView({ behavior: 'smooth' });
-                }
+                if (calendarSection) calendarSection.scrollIntoView({ behavior: 'smooth' });
             }, 1000);
         });
         
@@ -533,23 +526,17 @@
             ctx.fillStyle = '#05060a';
             ctx.fillRect(0, 0, width, height);
             ctx.fillStyle = '#ffffff';
-
-            for (let i = 0; i < stars.length; i++) {
-                let star = stars[i];
+            for (let star of stars) {
                 star.z -= 8;
-
                 if (star.z < 1) {
                     star.z = width;
                     star.x = Math.random() * width - width / 2;
                     star.y = Math.random() * height - height / 2;
                 }
-
-                let k = 128.0 / star.z;
-                let px = star.x * k + width / 2;
-                let py = star.y * k + height / 2;
-
-                let size = Math.max(0.5, (1 - star.z / width) * 2);
-
+                const k = 128.0 / star.z;
+                const px = star.x * k + width / 2;
+                const py = star.y * k + height / 2;
+                const size = Math.max(0.5, (1 - star.z / width) * 2);
                 if (px >= 0 && px <= width && py >= 0 && py <= height) {
                     ctx.beginPath();
                     ctx.arc(px, py, size, 0, Math.PI * 2);
