@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>ドローンパーク福津 | 公式サイト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#3b82f6',
+                        'neon-cyan': '#06b6d4',
+                        'neon-purple': '#a855f7',
+                        'neon-gold': '#fbbf24',
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+                        cyber: ['Rajdhani', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+
+        body {
+            background-color: #05060a;
+            color: #fff;
+            font-family: "Zen Kaku Gothic New", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Background Starfield */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0f172a 0%, #000 100%);
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: rgba(20, 20, 35, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(30, 30, 50, 0.9);
+        }
+
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            color: #3b82f6;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            color: #fff;
+            padding: 14px;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            font-weight: 900;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            transition: 0.3s;
+            text-align: center;
+            display: block;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-action:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .btn-action:disabled {
+            background: #2d3748 !important;
+            color: #718096 !important;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+            opacity: 0.6;
+        }
+
+        .embed-responsive {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+
+        .embed-responsive iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Gallery Design */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 100px;
+            gap: 10px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(110%);
+            transition: transform 0.8s ease, filter 0.5s ease;
+        }
+
+        .gallery-item:hover {
+            z-index: 10;
+            border-color: #3b82f6;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            transform: scale(1.02);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%) contrast(100%);
+        }
+
+        /* Grid Layout */
+        .g-1 {
+            grid-column: span 6;
+            grid-row: span 5;
+        }
+
+        .g-2 {
+            grid-column: span 3;
+            grid-row: span 3;
+        }
+
+        .g-3 {
+            grid-column: span 3;
+            grid-row: span 2;
+        }
+
+        .g-4 {
+            grid-column: span 3;
+            grid-row: span 3;
+        }
+
+        .g-5 {
+            grid-column: span 3;
+            grid-row: span 2;
+        }
+
+        .g-6 {
+            grid-column: span 4;
+            grid-row: span 3;
+        }
+
+        .g-7 {
+            grid-column: span 4;
+            grid-row: span 3;
+        }
+
+        .g-8 {
+            grid-column: span 4;
+            grid-row: span 3;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 150px;
+            }
+
+            .g-1,
+            .g-2,
+            .g-3,
+            .g-4,
+            .g-5,
+            .g-6,
+            .g-7,
+            .g-8 {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .g-1 {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .neon-text-gold {
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="bgm" loop preload="auto" playsinline>
+        <source src="DoronparkFukutu.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Startup Overlay -->
+    <div id="bgmStart" style="position:fixed;inset:0;background:rgba(0,0,0,.85);
+            z-index:9999;display:flex;flex-direction:column;align-items:center;
+            justify-content:center;cursor:pointer;color:white;text-align:center;">
+        <div style="font-size:1.6rem;font-weight:900;letter-spacing:.25em;margin-bottom:1rem;">
+            CLICK TO START
+        </div>
+        <div style="font-size:0.9rem;font-weight:700;color:#cbd5e1;opacity:0.8;">
+            ※マナーモードを解除してください<br>
+            (Please turn off Silent Mode)
+        </div>
+    </div>
+
+    <!-- Manual BGM Toggle Button -->
+    <div id="bgmToggle" style="
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    right: 20px;
+    z-index: 10000;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    transition: all 0.3s ease;
+">
+        <i id="bgmIcon" class="fas fa-volume-mute" style="color: #fff; font-size: 1.2rem;"></i>
+    </div>
+
+    <canvas id="starfield"></canvas>
+
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="text-xl font-black italic tracking-tighter uppercase font-cyber text-neon-blue"
+                data-aos="fade-right">DRONE PARK FUKUTSU</span>
+            <div class="hidden md:flex space-x-6 text-sm font-bold tracking-widest font-cyber" data-aos="fade-left">
+                <a href="#about" class="hover:text-neon-cyan transition">ABOUT</a>
+                <a href="#map" class="hover:text-neon-gold transition">MAP</a>
+                <a href="#pricing" class="hover:text-neon-blue transition">PRICE</a>
+                <a href="#reserve" class="hover:text-neon-purple transition">RESERVE</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20 overflow-x-hidden">
+
+        <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
+            <div
+                class="inline-block mb-4 px-4 py-1 border border-neon-blue text-neon-blue text-xs font-black tracking-widest uppercase rounded-full">
+                New Open in Fukutsu</div>
+            <h1 class="text-4xl md:text-7xl font-black leading-tight mb-8 italic">
+                福岡県福津市に<br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-cyan inline-block"
+                    data-aos="flip-up" data-aos-delay="500">ドローン練習所誕生！</span>
+            </h1>
+            <div class="glass-panel p-6 border-l-4 border-neon-cyan text-center max-w-3xl mx-auto mb-10 float-anim">
+                <p class="text-lg md:text-xl font-bold leading-relaxed">
+                    世界遺産「新原・奴山古墳群」近くの<br>
+                    <span class="text-neon-cyan">広大なDID地区外エリア（4,000坪）</span>
+                </p>
+            </div>
+        </section>
+
+        <section class="text-center mb-16" data-aos="zoom-in" data-aos-delay="600">
+            <div class="inline-block border-2 border-neon-gold px-8 py-4 rounded-2xl bg-neon-gold/5">
+                <h3 class="text-4xl md:text-6xl font-black italic tracking-wider font-cyber neon-text-gold">
+                    <span class="text-neon-gold">2月14日15日</span><br>
+                    <span style="color: #ff4d4d; text-shadow: 0 0 15px rgba(255, 77, 77, 0.6);">プレオープン！</span><br>
+                    <span class="text-2xl md:text-4xl text-neon-blue">（14日15日無料）</span>
+                </h3>
+            </div>
+        </section>
+
+        <section id="gallery" class="mb-24 overflow-hidden px-2">
+            <h2 class="section-title text-neon-gold" data-aos="fade-down">PHOTO GALLERY</h2>
+            <div class="gallery-container" data-aos="fade-up">
+                <div class="gallery-item g-1" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="park1.jpg" alt="パーク全体風景1">
+                    <div
+                        class="absolute top-4 left-4 bg-neon-blue text-white text-[10px] font-black px-3 py-1 skew-x-[-20deg]">
+                        THE FIELD</div>
+                </div>
+                <div class="gallery-item g-2" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="park2.jpg" alt="パーク風景2">
+                </div>
+                <div class="gallery-item g-3" data-aos="zoom-in" data-aos-delay="300">
+                    <img src="park3.jpg" alt="パーク風景3">
+                </div>
+                <div class="gallery-item g-5" data-aos="zoom-in" data-aos-delay="400">
+                    <img src="park4.jpg" alt="パーク風景4">
+                </div>
+                <div class="gallery-item g-4" data-aos="zoom-in" data-aos-delay="500">
+                    <img src="park5.jpg" alt="パーク風景5">
+                </div>
+                <div class="gallery-item g-6" data-aos="zoom-in" data-aos-delay="600">
+                    <img src="park6.jpg" alt="パーク風景6">
+                </div>
+                <div class="gallery-item g-7" data-aos="zoom-in" data-aos-delay="700">
+                    <img src="park7.jpg" alt="パーク風景7">
+                </div>
+                <div class="gallery-item g-8" data-aos="zoom-in" data-aos-delay="800">
+                    <img src="park8.jpg" alt="パーク風景8">
+                </div>
+            </div>
+        </section>
+
+        <section id="map" class="mb-24">
+            <h2 class="section-title text-neon-gold" data-aos="zoom-in">ACCESS MAP</h2>
+            <div class="embed-responsive shadow-[0_0_30px_rgba(251,191,36,0.2)] border-neon-gold" data-aos="fade-up">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1461.4287844005705!2d130.482046!3d33.808209!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3541459a997233eb%3A0xc33e63f912e75e9b!2zMzPCsDQ4JzI5LjUiTiAxMzDCsDI4JzU4LjkiRQ!5e0!3m2!1sja!2sjp!4v1700000000000!5m2!1sja!2sjp"
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <p class="text-center mt-6 text-xl font-bold" data-aos="fade-up">〒811-3302 福岡県福津市大石字内野527-4</p>
+        </section>
+
+        <section id="about" class="mb-24">
+            <h2 class="section-title" data-aos="fade-up">FEATURES</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 text-center">
+                <div class="glass-panel p-4 border border-neon-cyan flex flex-col items-center justify-center h-full"
+                    data-aos="flip-left" data-aos-delay="100">
+                    <i class="fas fa-id-card text-3xl text-neon-cyan mb-2"></i>
+                    <p class="font-bold">一等二等国家資格練習</p>
+                </div>
+                <div class="glass-panel p-4 border border-neon-cyan flex flex-col items-center justify-center h-full"
+                    data-aos="flip-left" data-aos-delay="200">
+                    <i class="fas fa-camera text-3xl text-neon-cyan mb-2"></i>
+                    <p class="font-bold">撮影ドローン</p>
+                </div>
+                <div class="glass-panel p-4 border border-neon-gold flex flex-col items-center justify-center h-full"
+                    data-aos="flip-left" data-aos-delay="300">
+                    <i class="fas fa-spray-can text-3xl text-neon-gold mb-2"></i>
+                    <p class="font-bold">農薬散布練習</p>
+                </div>
+                <div class="glass-panel p-4 border border-neon-purple flex flex-col items-center justify-center h-full"
+                    data-aos="flip-left" data-aos-delay="400">
+                    <i class="fas fa-gamepad text-3xl text-neon-purple mb-2"></i>
+                    <p class="font-bold">FPV練習</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 text-center border-2 border-neon-blue space-y-4" data-aos="zoom-in">
+                <p class="text-lg font-bold">※ 現在建設途中ですが、<span class="text-neon-cyan">撮影ドローン・国家資格練習は可能</span>です。</p>
+                <p class="text-gray-400">現在、ラジコンバギーコース・FPVコース計画中</p>
+                <div class="border-t border-white/10 pt-4 mt-4">
+                    <p class="text-lg font-bold">
+                        一等二等国家資格練習の場合、登録講習機関に所属する<br>
+                        <span class="text-neon-blue font-black text-xl">講習指導員による指導可能（オプション）</span>
+                    </p>
+                    <p class="text-sm text-gray-400 mt-2">※夜間飛行については応談</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="mb-24">
+            <h2 class="section-title" data-aos="fade-up">UTILIZATION RATES</h2>
+            <div class="glass-panel text-center border-2 border-neon-blue mb-8" data-aos="fade-up">
+                <p class="text-gray-400 text-sm font-bold mb-2">基本利用料金</p>
+                <p class="text-6xl font-black mb-4">¥2,200<span class="text-xl"> / 1時間</span></p>
+                <div class="text-sm font-bold text-gray-300 space-y-2">
+                    <p>1時間延長料：¥770</p>
+                    <p>一日貸切：¥22,000 (人数不問)</p>
+                    <p class="text-neon-blue text-lg mt-2 border-t border-white/10 pt-2 inline-block px-4">
+                        講習指導員料金：¥12,000（1時間）</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-panel p-6 border-l-4 border-neon-purple" data-aos="fade-right">
+                    <p class="text-neon-purple font-black">個人会員</p>
+                    <p class="text-3xl font-black mt-2">¥22,000 <span class="text-sm">/ 一年</span></p>
+                    <p class="text-right text-neon-purple font-bold">▶ 30% OFF</p>
+                </div>
+                <div class="glass-panel p-6 border-l-4 border-neon-purple" data-aos="fade-left">
+                    <p class="text-neon-purple font-black">法人会員</p>
+                    <p class="text-3xl font-black mt-2">¥220,000 <span class="text-sm">/ 一年</span></p>
+                    <p class="text-right text-neon-purple font-bold">▶ 40% OFF</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 border-2 border-neon-cyan bg-neon-cyan/10 text-center" data-aos="zoom-in">
+                <p class="text-neon-cyan font-black text-xl mb-2">【スタッフ会員】</p>
+                <p class="text-sm font-bold leading-relaxed">
+                    草刈りや柵作り、それに付随する作業を１日お手伝いして頂ける方には<br>
+                    スタッフ特典として<span class="text-white text-lg underline decoration-neon-cyan">ご希望の日１日パーク料無料</span>。
+                </p>
+            </div>
+        </section>
+
+        <section id="rental" class="mb-24">
+            <h2 class="section-title" data-aos="fade-up">RENTAL</h2>
+            <div class="glass-panel p-8" data-aos="fade-up">
+                <p class="text-center font-bold text-gray-400 mb-6">機体貸出ラインナップ</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center font-black text-gray-200">
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in"
+                        data-aos-delay="100">Phantom 4</div>
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in"
+                        data-aos-delay="200">Mavic 3 Pro</div>
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in"
+                        data-aos-delay="300">Air 3</div>
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in"
+                        data-aos-delay="400">Avata 2</div>
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in"
+                        data-aos-delay="500">Mini</div>
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/10 text-neon-cyan" data-aos="zoom-in"
+                        data-aos-delay="600">トイドローン 他</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="calendar" class="mb-24 text-center">
+            <h2 class="section-title text-neon-gold" data-aos="fade-down">CALENDAR</h2>
+            <div class="glass-panel !p-2 bg-white rounded-[2rem] overflow-hidden border-4 border-neon-gold"
+                data-aos="fade-up">
+                <iframe
+                    src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Asia%2FTokyo&showPrint=0&src=ZG9yb25wYXJrZnVrdXR1MkBnbWFpbC5jb20&src=amEuamFwYW5lc2UjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23039be5&color=%230b8043"
+                    style="border:solid 1px #777" width="100%" height="450" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </section>
+
+        <section id="reserve" class="mb-24">
+            <div class="glass-panel border-2 border-neon-blue !bg-black/90 p-8" data-aos="zoom-in-up">
+                <h2 class="text-3xl font-black text-center mb-8 text-neon-blue tracking-widest">RESERVATION</h2>
+                <form id="reservationForm">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div data-aos="fade-right" data-aos-delay="100">
+                            <label class="block text-xs font-bold text-neon-blue mb-1">氏名</label>
+                            <input type="text" id="name" class="input-field" placeholder="お名前" required>
+                        </div>
+                        <div data-aos="fade-left" data-aos-delay="100">
+                            <label class="block text-xs font-bold text-neon-blue mb-1">年齢</label>
+                            <input type="number" id="age" class="input-field" placeholder="年齢" required>
+                        </div>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">住所</label>
+                        <input type="text" id="address" class="input-field" placeholder="ご住所" required>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="300">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">連絡先電話番号</label>
+                        <input type="tel" id="tel" class="input-field" placeholder="090-0000-0000" required>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="400">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">ドローン保有資格</label>
+                        <select id="license" class="input-field text-gray-400 font-bold bg-black">
+                            <option value="▼ 民間資格">▼ 民間資格</option>
+                            <option value="▼ 国家資格（二等）">▼ 国家資格（二等）</option>
+                            <option value="▼ 国家資格（一等）">▼ 国家資格（一等）</option>
+                            <option value="▼ 資格なし">▼ 資格なし</option>
+                        </select>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="500">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">ご希望日</label>
+                        <input type="date" id="date" class="input-field text-gray-400 font-bold bg-black" required>
+                    </div>
+
+                    <div data-aos="fade-up" data-aos-delay="600">
+                        <label class="block text-xs font-bold text-neon-blue mb-1">希望練習種類</label>
+                        <select id="type" class="input-field text-gray-400 font-bold bg-black">
+                            <option value="▼ 一等国家資格練習">▼ 一等国家資格練習</option>
+                            <option value="▼ 撮影ドローン">▼ 撮影ドローン</option>
+                            <option value="▼ 農薬散布練習">▼ 農薬散布練習</option>
+                            <option value="▼ FPV練習">▼ FPV練習</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-8" data-aos="fade-up" data-aos-delay="700">
+                        <div
+                            class="bg-white/5 p-4 rounded-xl border border-white/20 text-sm font-bold text-gray-300 leading-relaxed">
+                            <p class="mb-2 text-neon-gold border-b border-neon-gold pb-1 inline-block">【ご利用規約・注意事項】</p>
+                            <ul class="list-decimal list-inside space-y-1">
+                                <li>機体登録、リモートID、飛行許可申請や飛行計画通報等、飛行に必要な国土交通省（DIPS2.0）への申請は事前に済ませておいて下さい。</li>
+                                <li>風速など、利用者様の申請済み飛行マニュアルは厳守のこと。</li>
+                                <li>機体の保険は事前に必ず入っておいて下さい。</li>
+                                <li>ドローン機体の事故に関しては全て自己責任となります。</li>
+                            </ul>
+                            <div class="mt-4 flex items-center justify-center gap-2">
+                                <input type="checkbox" id="agreement" class="w-5 h-5 accent-blue-500 cursor-pointer"
+                                    onchange="toggleSubmitButton()">
+                                <label for="agreement" class="cursor-pointer hover:text-white">上記規約に同意して予約します</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-action text-xl mt-4 w-full"
+                        disabled>予約リクエスト</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6 border-t-4 border-t-neon-blue" data-aos="fade-right">
+                    <p class="text-neon-blue font-black text-xl mb-4">【パーク詳細】</p>
+                    <p class="text-lg font-bold mb-2">ドローンパーク福津</p>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        営業時間：原則として 9:00~17:00<br>
+                        〒811-3302 福岡県福津市大石字内野527-4<br>
+                        電話：070-8307-9731
+                    </p>
+                </div>
+                <div class="glass-panel p-6 border-t-4 border-t-neon-purple" data-aos="fade-left">
+                    <p class="text-neon-purple font-black text-xl mb-4">【運営元連絡先】</p>
+                    <p class="text-lg font-bold mb-2">株式会社 AoPro</p>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        〒806-0024 福岡県北九州市八幡西区南八千代町3-12-604<br>
+                        電話：050-3593-0070<br>
+                        Email: doronparkfukutu2@gmail.com
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center opacity-30 text-[10px] tracking-[0.5em] pb-10">
+            © 2026 DRONE PARK FUKUTSU
+        </footer>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: false,
+            mirror: true
+        });
+
+        function toggleSubmitButton() {
+            const agreement = document.getElementById('agreement');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !agreement.checked;
+        }
+
+        document.getElementById('reservationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!document.getElementById('agreement').checked) return;
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const address = document.getElementById('address').value;
+            const tel = document.getElementById('tel').value;
+            const license = document.getElementById('license').value;
+            const date = document.getElementById('date').value;
+            const type = document.getElementById('type').value;
+
+            const email = 'show1180@rakumail.jp';
+            const subject = encodeURIComponent(`【予約リクエスト】ドローンパーク福津：${name}様`);
+            const body = encodeURIComponent(
+                `ドローンパーク福津 予約リクエストメール\n\n` +
+                `------------------------------------\n` +
+                `氏名：${name}\n` +
+                `年齢：${age}歳\n` +
+                `住所：${address}\n` +
+                `連絡先：${tel}\n\n` +
+                `希望日：${date}\n` +
+                `保有資格：${license}\n` +
+                `練習種類：${type}\n` +
+                `------------------------------------\n\n` +
+                `※上記規約に同意済み\n` +
+                `※このメールは予約リクエストです。管理者からの連絡をもって予約確定となります。`
+            );
+
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+            setTimeout(() => {
+                const calendarSection = document.getElementById('calendar');
+                if (calendarSection) calendarSection.scrollIntoView({ behavior: 'smooth' });
+            }, 1000);
+        });
+
+        // Starfield background logic
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+
+        function init() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            stars = [];
+            for (let i = 0; i < 400; i++) {
+                stars.push({
+                    x: Math.random() * width - width / 2,
+                    y: Math.random() * height - height / 2,
+                    z: Math.random() * width
+                });
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = '#05060a';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#ffffff';
+            for (let star of stars) {
+                star.z -= 8;
+                if (star.z < 1) {
+                    star.z = width;
+                    star.x = Math.random() * width - width / 2;
+                    star.y = Math.random() * height - height / 2;
+                }
+                const k = 128.0 / star.z;
+                const px = star.x * k + width / 2;
+                const py = star.y * k + height / 2;
+                const size = Math.max(0.5, (1 - star.z / width) * 2);
+                if (px >= 0 && px <= width && py >= 0 && py <= height) {
+                    ctx.beginPath();
+                    ctx.arc(px, py, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+
+        // BGM Control
+        const bgm = document.getElementById('bgm');
+        const bgmStart = document.getElementById('bgmStart');
+        const bgmToggle = document.getElementById('bgmToggle');
+        const bgmIcon = document.getElementById('bgmIcon');
+
+        bgm.volume = 0.35;
+        let isPlaying = false;
+
+        // Create AudioContext specifically for unlocking mobile audio
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        // Function to update icon state
+        const updateIcon = (playing) => {
+            if (playing) {
+                bgmIcon.classList.remove('fa-volume-mute');
+                bgmIcon.classList.add('fa-music');
+                bgmToggle.style.borderColor = '#3b82f6';
+                bgmToggle.style.boxShadow = '0 0 15px rgba(59, 130, 246, 0.4)';
+            } else {
+                bgmIcon.classList.remove('fa-music');
+                bgmIcon.classList.add('fa-volume-mute');
+                bgmToggle.style.borderColor = '#64748b';
+                bgmToggle.style.boxShadow = 'none';
+            }
+        };
+
+        const tryPlayBgm = () => {
+            // Unlock AudioContext (Critical for iOS)
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            bgm.muted = false;
+            bgm.volume = 0.35;
+
+            const playPromise = bgm.play();
+
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        isPlaying = true;
+                        updateIcon(true);
+
+                        // Fade out overlay
+                        if (bgmStart.style.display !== 'none') {
+                            bgmStart.style.opacity = '0';
+                            setTimeout(() => {
+                                bgmStart.style.display = "none";
+                            }, 500);
+                        }
+                    })
+                    .catch((err) => {
+                        console.error("BGM playback blocked or failed:", err);
+                        isPlaying = false;
+                    });
+            }
+        };
+
+        // Main Toggle Function
+        const toggleBgm = (e) => {
+            e.stopPropagation();
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            if (isPlaying) {
+                bgm.pause();
+                isPlaying = false;
+                updateIcon(false);
+            } else {
+                bgm.currentTime = 0;
+                tryPlayBgm();
+            }
+        };
+
+        // Event Listeners for both Start Overlay and Toggle Button
+        bgmStart.addEventListener('click', tryPlayBgm);
+        bgmStart.addEventListener('touchstart', tryPlayBgm, { passive: false });
+
+        bgmToggle.addEventListener('click', toggleBgm);
+        bgmToggle.addEventListener('touchstart', toggleBgm, { passive: false });
+    </script>
+</body>
+
+</html>
