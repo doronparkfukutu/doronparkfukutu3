@@ -285,8 +285,6 @@
         </div>
     </div>
 
-
-
     <canvas id="starfield"></canvas>
 
     <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10">
@@ -716,9 +714,16 @@
         bgm.volume = 0.35;
         let isPlaying = false;
 
-        // Create AudioContext specifically for unlocking mobile audio
+        // Safer AudioContext creation
         const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioCtx = new AudioContext();
+        let audioCtx = null;
+        try {
+            if (AudioContext) {
+                audioCtx = new AudioContext();
+            }
+        } catch (e) {
+            console.error("AudioContext not supported", e);
+        }
 
         // Function to update icon state
         const updateIcon = (playing) => {
@@ -737,8 +742,8 @@
 
         const tryPlayBgm = () => {
             // Unlock AudioContext (Critical for iOS)
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(e => console.log("AudioContext resume error:", e));
             }
 
             bgm.muted = false;
@@ -761,8 +766,11 @@
                         }
                     })
                     .catch((err) => {
-                        console.error("BGM playback blocked or failed:", err);
+                        console.error("BGM Playback Error:", err);
                         isPlaying = false;
+                        updateIcon(false);
+                        // DEBUG: Show error to user on screen
+                        alert("再生エラー: " + err.message + "\\n可能な限りマナーモードを解除してください");
                     });
             }
         };
@@ -770,8 +778,9 @@
         // Main Toggle Function
         const toggleBgm = (e) => {
             e.stopPropagation();
+            e.preventDefault(); // Prevent ghost clicks
 
-            if (audioCtx.state === 'suspended') {
+            if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
 
