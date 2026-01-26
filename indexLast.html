@@ -285,27 +285,7 @@
         </div>
     </div>
 
-    <!-- Manual BGM Toggle Button -->
-    <div id="bgmToggle" style="
-    position: fixed;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    right: 20px;
-    z-index: 10000;
-    width: 50px;
-    height: 50px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 2px solid #3b82f6;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-    transition: all 0.3s ease;
-">
-        <i id="bgmIcon" class="fas fa-volume-mute" style="color: #fff; font-size: 1.2rem;"></i>
-    </div>
+
 
     <canvas id="starfield"></canvas>
 
@@ -602,6 +582,31 @@
             © 2026 DRONE PARK FUKUTSU
         </footer>
 
+    </div>
+
+    <!-- Manual BGM Toggle Button (Moved to bottom) -->
+    <div id="bgmToggle" style="
+        position: fixed;
+        bottom: 20px;
+        bottom: calc(20px + env(safe-area-inset-bottom));
+        right: 20px;
+        z-index: 2147483647; /* Max Z-Index */
+        width: 60px;
+        height: 60px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #3b82f6;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        transition: all 0.3s ease;
+    ">
+        <i id="bgmIcon" class="fas fa-volume-mute" style="color: #fff; font-size: 1.5rem;"></i>
+        <span
+            style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: bold; color: white; white-space: nowrap; text-shadow: 0 0 5px black;">SOUND</span>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
