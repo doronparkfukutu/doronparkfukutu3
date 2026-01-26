@@ -2,7 +2,7 @@
 <html lang="ja" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>ドローンパーク福津 | 公式サイト</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
@@ -17,7 +17,6 @@
                         'neon-cyan': '#06b6d4',
                         'neon-purple': '#a855f7',
                         'neon-gold': '#fbbf24',
-                        'neon-red': '#ff3131', /* 明るい赤を追加 */
                     },
                     fontFamily: {
                         sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
@@ -30,17 +29,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
         
-        html, body { 
-            background-color: #05060a; 
-            color: #fff; 
-            font-family: "Zen Kaku Gothic New", sans-serif; 
-            overflow-x: hidden; 
-            width: 100%;
-            position: relative;
-        }
+        body { background-color: #05060a; color: #fff; font-family: "Zen Kaku Gothic New", sans-serif; overflow-x: hidden; }
         
+        /* Background Starfield */
         #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, #0f172a 0%, #000 100%); }
 
+        /* Glass Panel */
         .glass-panel { 
             background: rgba(20, 20, 35, 0.8); 
             backdrop-filter: blur(12px); 
@@ -94,6 +88,7 @@
         .embed-responsive { position: relative; width: 100%; height: 450px; border-radius: 1.5rem; overflow: hidden; border: 2px solid #333; }
         .embed-responsive iframe { width: 100%; height: 100%; border: 0; }
         
+        /* Gallery Design */
         .gallery-container {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -131,6 +126,7 @@
             filter: grayscale(0%) contrast(100%);
         }
 
+        /* Grid Layout */
         .g-1 { grid-column: span 6; grid-row: span 5; }
         .g-2 { grid-column: span 3; grid-row: span 3; } 
         .g-3 { grid-column: span 3; grid-row: span 2; }
@@ -162,13 +158,21 @@
         .neon-text-gold {
             text-shadow: 0 0 10px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.4);
         }
-        /* プレオープン用の明るいネオンレッド追加 */
-        .neon-text-red {
-            text-shadow: 0 0 10px rgba(255, 49, 49, 0.8), 0 0 20px rgba(255, 49, 49, 0.4);
-        }
     </style>
 </head>
 <body>
+<audio id="bgm" loop preload="auto">
+  <source src="DoronparkFukutu.mp3" type="audio/mpeg">
+</audio>
+
+<div id="bgmStart"
+     style="position:fixed;inset:0;background:rgba(0,0,0,.85);
+            z-index:9999;display:flex;align-items:center;
+            justify-content:center;font-size:1.6rem;
+            font-weight:900;letter-spacing:.25em;
+            cursor:pointer;color:white;">
+  CLICK TO START
+</div>
 
     <canvas id="starfield"></canvas>
 
@@ -184,7 +188,7 @@
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20 overflow-x-hidden">
+    <div class="max-w-5xl mx-auto px-6 pt-28 pb-20">
 
         <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div class="inline-block mb-4 px-4 py-1 border border-neon-blue text-neon-blue text-xs font-black tracking-widest uppercase rounded-full">New Open in Fukutsu</div>
@@ -195,16 +199,16 @@
             <div class="glass-panel p-6 border-l-4 border-neon-cyan text-center max-w-3xl mx-auto mb-10 float-anim">
                 <p class="text-lg md:text-xl font-bold leading-relaxed">
                     世界遺産「新原・奴山古墳群」近くの<br>
-                    <span class="text-neon-cyan">広大なDID地区外エリア（4,000坪）</span>
+                    <span class="text-neon-cyan">広大なDID地区外エリア（5,000坪）</span>
                 </p>
             </div>
         </section>
 
         <section class="text-center mb-16" data-aos="zoom-in" data-aos-delay="600">
             <div class="inline-block border-2 border-neon-gold px-8 py-4 rounded-2xl bg-neon-gold/5">
-                <h3 class="text-4xl md:text-6xl font-black italic tracking-wider font-cyber">
-                    <span class="text-neon-gold neon-text-gold">2月14日15日</span><br>
-                    <span class="text-neon-red neon-text-red">プレオープン！</span><br>
+                <h3 class="text-4xl md:text-6xl font-black italic tracking-wider font-cyber neon-text-gold">
+                    <span class="text-neon-gold">2月14日15日</span><br>
+                    <span style="color: #ff4d4d; text-shadow: 0 0 15px rgba(255, 77, 77, 0.6);">プレオープン！</span><br>
                     <span class="text-2xl md:text-4xl text-neon-blue">（14日15日無料）</span>
                 </h3>
             </div>
@@ -245,7 +249,7 @@
             <h2 class="section-title text-neon-gold" data-aos="zoom-in">ACCESS MAP</h2>
             <div class="embed-responsive shadow-[0_0_30px_rgba(251,191,36,0.2)] border-neon-gold" data-aos="fade-up">
                 <iframe 
-                    src="https://maps.google.com/maps?q=33.808196,130.483046&z=17&output=embed" 
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3314.996160167232!2d130.4804711757065!3d33.808208973248384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzPCsDQ4JzI5LjYiTiAxMzDCsDI4JzU5LjAiRQ!5e0!3m2!1sja!2sjp!4v1707000000000!5m2!1sja!2sjp" 
                     width="600" 
                     height="450" 
                     style="border:0;" 
@@ -254,7 +258,7 @@
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
-            <p class="text-center mt-6 text-xl font-bold" data-aos="fade-up">〒811-3302 福岡県福津市大石字内野</p>
+            <p class="text-center mt-6 text-xl font-bold" data-aos="fade-up">〒811-3302 福岡県福津市大石字内野527-4</p>
         </section>
 
         <section id="about" class="mb-24">
@@ -327,7 +331,7 @@
 
         <section id="rental" class="mb-24">
             <h2 class="section-title" data-aos="fade-up">RENTAL</h2>
-            <div class="glass-panel" data-aos="fade-up">
+            <div class="glass-panel p-8" data-aos="fade-up">
                 <p class="text-center font-bold text-gray-400 mb-6">機体貸出ラインナップ</p>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center font-black text-gray-200">
                     <div class="p-3 bg-white/5 rounded-lg border border-white/10" data-aos="zoom-in" data-aos-delay="100">Phantom 4</div>
@@ -449,17 +453,26 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: false, mirror: true });
+        AOS.init({ 
+            duration: 800, 
+            once: false,
+            mirror: true
+        });
 
+        // Toggle Reservation Button based on agreement
         function toggleSubmitButton() {
             const agreement = document.getElementById('agreement');
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = !agreement.checked;
         }
 
+        // Reservation Form Submission Logic
         document.getElementById('reservationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if (!document.getElementById('agreement').checked) return;
+            
+            if (!document.getElementById('agreement').checked) {
+                return;
+            }
 
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
@@ -490,10 +503,13 @@
 
             setTimeout(() => {
                 const calendarSection = document.getElementById('calendar');
-                if (calendarSection) calendarSection.scrollIntoView({ behavior: 'smooth' });
+                if (calendarSection) {
+                    calendarSection.scrollIntoView({ behavior: 'smooth' });
+                }
             }, 1000);
         });
         
+        // Starfield background logic
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
         let width, height, stars = [];
@@ -517,18 +533,23 @@
             ctx.fillStyle = '#05060a';
             ctx.fillRect(0, 0, width, height);
             ctx.fillStyle = '#ffffff';
+
             for (let i = 0; i < stars.length; i++) {
                 let star = stars[i];
-                star.z -= 12; 
-                if (star.z <= 0) {
+                star.z -= 8;
+
+                if (star.z < 1) {
                     star.z = width;
                     star.x = Math.random() * width - width / 2;
                     star.y = Math.random() * height - height / 2;
                 }
+
                 let k = 128.0 / star.z;
                 let px = star.x * k + width / 2;
                 let py = star.y * k + height / 2;
-                let size = (1 - star.z / width) * 2; 
+
+                let size = Math.max(0.5, (1 - star.z / width) * 2);
+
                 if (px >= 0 && px <= width && py >= 0 && py <= height) {
                     ctx.beginPath();
                     ctx.arc(px, py, size, 0, Math.PI * 2);
@@ -541,6 +562,19 @@
         window.addEventListener('resize', init);
         init();
         animate();
+
+        // BGM Control
+        const bgm = document.getElementById('bgm');
+        const bgmStart = document.getElementById('bgmStart');
+        bgm.volume = 0.35;
+
+        ["pointerdown", "touchstart"].forEach(evt => {
+            bgmStart.addEventListener(evt, () => {
+                bgm.currentTime = 0;
+                bgm.play().catch(() => {});
+                bgmStart.style.display = "none";
+            }, { once: true });
+        });
     </script>
 </body>
 </html>
