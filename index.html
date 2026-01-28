@@ -35,7 +35,7 @@
             color: #fff;
             font-family: "Zen Kaku Gothic New", sans-serif;
             overflow-x: hidden;
-            padding-top: 80px;
+            padding-top: 0;
         }
 
         /* Background Starfield */
@@ -88,7 +88,7 @@
         }
 
         .input-field:focus {
-            border-color: #3b82f6;
+            border-color: hsl(217, 91%, 60%);
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
 
@@ -277,7 +277,7 @@
             <i class="fas fa-music"></i> 音楽プレイヤー（下の再生ボタンを押してください）
         </p>
         <audio id="bgm" controls playsinline loop style="width: 90%; max-width: 400px; height: 40px; display: block;"
-            onplaying="document.getElementById('bgmContainer').style.display='none'">
+            onplaying="document.getElementById('bgmContainer').style.display='none'; document.getElementById('mainNav').style.top='0'; document.getElementById('mainContent').style.marginTop='0';">
             <source src="DoronparkFukutu.mp3" type="audio/mpeg">
             <p style="color:red; background:white;">お使いのブラウザはオーディオ再生に対応していません。</p>
         </audio>
@@ -289,10 +289,9 @@
 
     <canvas id="starfield"></canvas>
 
-    <nav class="fixed w-full z-40 bg-black/80 backdrop-blur-xl border-b border-white/10" style="top: 90px;">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <span class="text-xl font-black italic tracking-tighter uppercase font-cyber text-neon-blue"
-                data-aos="fade-right">DRONE PARK FUKUTSU</span>
+    <nav id="mainNav" class="fixed w-full z-40 bg-black/80 backdrop-blur-xl border-b border-white/10"
+        style="top: 150px;">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-end items-center">
             <div class="hidden md:flex space-x-6 text-sm font-bold tracking-widest font-cyber" data-aos="fade-left">
                 <a href="#about" class="hover:text-neon-cyan transition">ABOUT</a>
                 <a href="#map" class="hover:text-neon-gold transition">MAP</a>
@@ -302,7 +301,7 @@
         </div>
     </nav>
 
-    <div class="max-w-5xl mx-auto px-6 pt-10 pb-20 overflow-x-hidden" style="margin-top: 90px;">
+    <div id="mainContent" class="max-w-5xl mx-auto px-6 pt-10 pb-20 overflow-x-hidden" style="margin-top: 150px;">
 
         <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div
