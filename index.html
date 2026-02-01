@@ -347,6 +347,56 @@
                 opacity: 0.6;
             }
         }
+
+        /* Nav Buttons */
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 10000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            user-select: none;
+        }
+
+        .lightbox-nav:hover {
+            background: #3b82f6;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -761,9 +811,11 @@
     </div>
 
     <div id="lightboxModal">
+        <div class="lightbox-nav lightbox-prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
         <div class="lightbox-content">
             <img src="" class="lightbox-img" id="lightboxImg">
         </div>
+        <div class="lightbox-nav lightbox-next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
         <div class="lightbox-hint">クリックして閉じる</div>
     </div>
 
@@ -869,14 +921,30 @@
         // Lightbox Logic
         const lightboxModal = document.getElementById('lightboxModal');
         const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxClose = document.querySelector('.lightbox-close');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-        document.querySelectorAll('.gallery-item img').forEach(img => {
-            img.parentElement.addEventListener('click', () => {
+        let currentImgIndex = 0;
+        const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
+
+        function updateLightboxImage(index) {
+            currentImgIndex = index;
+            const img = galleryImages[currentImgIndex];
+            lightboxImg.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImg.src = img.src;
+                lightboxImg.style.opacity = '1';
+            }, 150);
+        }
+
+        galleryImages.forEach((img, index) => {
+            img.parentElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentImgIndex = index;
                 lightboxImg.src = img.src;
                 lightboxModal.style.display = 'flex';
                 setTimeout(() => lightboxModal.classList.add('active'), 10);
-                document.body.style.overflow = 'hidden'; // Prevent scroll
+                document.body.style.overflow = 'hidden';
             });
         });
 
@@ -884,19 +952,36 @@
             lightboxModal.classList.remove('active');
             setTimeout(() => {
                 lightboxModal.style.display = 'none';
-                document.body.style.overflow = 'auto'; // Restore scroll
+                document.body.style.overflow = 'auto';
             }, 300);
         };
 
-        lightboxModal.addEventListener('click', () => {
-            closeLightbox();
-        });
-
-        // Close on ESC key
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
+        lightboxModal.addEventListener('click', (e) => {
+            if (!e.target.closest('.lightbox-nav') && !e.target.closest('.lightbox-img')) {
                 closeLightbox();
             }
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            let newIndex = currentImgIndex - 1;
+            if (newIndex < 0) newIndex = galleryImages.length - 1;
+            updateLightboxImage(newIndex);
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            let newIndex = currentImgIndex + 1;
+            if (newIndex >= galleryImages.length) newIndex = 0;
+            updateLightboxImage(newIndex);
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (!lightboxModal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight') nextBtn.click();
         });
     </script>
 </body>
