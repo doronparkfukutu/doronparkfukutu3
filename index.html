@@ -324,12 +324,12 @@
 
         .lightbox-close {
             position: fixed;
-            top: 25px;
-            right: 25px;
-            width: 44px;
-            height: 44px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -337,14 +337,16 @@
             color: #fff;
             font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10000;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10001;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .lightbox-close:hover {
             background: #3b82f6;
-            transform: rotate(90deg);
+            transform: scale(1.1) rotate(90deg);
+            border-color: #fff;
         }
     </style>
 </head>
@@ -760,8 +762,8 @@
     </div>
 
     <div id="lightboxModal">
+        <span class="lightbox-close"><i class="fas fa-times"></i></span>
         <div class="lightbox-content">
-            <span class="lightbox-close"><i class="fas fa-times"></i></span>
             <img src="" class="lightbox-img" id="lightboxImg">
         </div>
     </div>
