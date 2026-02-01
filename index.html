@@ -291,7 +291,10 @@
             z-index: 9999;
             opacity: 0;
             transition: opacity 0.3s ease;
-            cursor: zoom-out;
+            cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         #lightboxModal.active {
@@ -300,10 +303,8 @@
         }
 
         .lightbox-content {
-            margin: auto;
             max-width: 90%;
-            max-height: 90%;
-            position: relative;
+            max-height: 85%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -311,9 +312,9 @@
 
         .lightbox-img {
             max-width: 100%;
-            max-height: 90vh;
+            max-height: 85vh;
             border-radius: 0.5rem;
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.4);
             transform: scale(0.9);
             transition: transform 0.3s ease;
         }
@@ -322,35 +323,29 @@
             transform: scale(1);
         }
 
-        .lightbox-close {
-            position: fixed !important;
-            top: 20px !important;
-            right: 20px !important;
-            width: 50px !important;
-            height: 50px !important;
-            background: rgba(0, 0, 0, 0.8) !important;
-            backdrop-filter: blur(8px);
-            border-radius: 50%;
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff !important;
-            font-size: 32px !important;
+        .lightbox-hint {
+            color: #fff;
+            margin-top: 20px;
+            font-size: 14px;
             font-weight: bold;
-            line-height: 1;
-            cursor: pointer !important;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2147483647 !important;
-            /* Maximum possible z-index */
-            border: 2px solid rgba(255, 255, 255, 0.5) !important;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8) !important;
-            user-select: none;
+            background: rgba(59, 130, 246, 0.6);
+            padding: 8px 20px;
+            border-radius: 20px;
+            animation: pulse 2s infinite;
         }
 
-        .lightbox-close:hover {
-            background: #3b82f6;
-            transform: scale(1.1) rotate(90deg);
-            border-color: #fff;
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
         }
     </style>
 </head>
@@ -766,10 +761,10 @@
     </div>
 
     <div id="lightboxModal">
-        <span class="lightbox-close">&times;</span>
         <div class="lightbox-content">
             <img src="" class="lightbox-img" id="lightboxImg">
         </div>
+        <div class="lightbox-hint">クリックして閉じる</div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -893,10 +888,8 @@
             }, 300);
         };
 
-        lightboxModal.addEventListener('click', (e) => {
-            if (e.target === lightboxModal || e.target === lightboxClose || e.target.closest('.lightbox-close')) {
-                closeLightbox();
-            }
+        lightboxModal.addEventListener('click', () => {
+            closeLightbox();
         });
 
         // Close on ESC key
