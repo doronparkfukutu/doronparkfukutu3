@@ -375,27 +375,11 @@
 
 <body>
 
-    <!-- Native Audio Controls (Failsafe) -->
-    <div id="bgmContainer"
-        style="position: fixed; top: 0; left: 0; width: 100%; z-index: 2147483647; background: rgba(0,0,0,0.95); padding: 15px; text-align: center; border-bottom: 2px solid #3b82f6; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <p style="color: #3b82f6; font-size: 14px; font-weight: bold; margin: 0;">
-            <i class="fas fa-music"></i> 音楽プレイヤー（下の再生ボタンを押してください）
-        </p>
-        <audio id="bgm" controls playsinline loop style="width: 90%; max-width: 400px; height: 40px; display: block;"
-            onplaying="document.getElementById('bgmContainer').style.display='none'; document.getElementById('mainNav').style.top='0'; document.getElementById('mainContent').style.marginTop='0';">
-            <source src="DoronparkFukutu.mp3" type="audio/mpeg">
-            <p style="color:red; background:white;">お使いのブラウザはオーディオ再生に対応していません。</p>
-        </audio>
-        <button onclick="const a=document.getElementById('bgm'); a.load(); a.play();"
-            style="background:#333; color:#fff; border:1px solid #555; padding:5px 15px; border-radius:5px; font-size:12px;">
-            <i class="fas fa-sync"></i> 音が出ない場合はここを押してリセット
-        </button>
-    </div>
+
 
     <canvas id="starfield"></canvas>
 
-    <nav id="mainNav" class="fixed w-full z-40 bg-black/80 backdrop-blur-xl border-b border-white/10"
-        style="top: 150px;">
+    <nav id="mainNav" class="fixed w-full z-40 bg-black/80 backdrop-blur-xl border-b border-white/10 top-0">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-end items-center">
             <div class="hidden md:flex space-x-6 text-sm font-bold tracking-widest font-cyber" data-aos="fade-left">
                 <a href="#about" class="hover:text-neon-cyan transition">ABOUT</a>
@@ -406,7 +390,7 @@
         </div>
     </nav>
 
-    <div id="mainContent" class="max-w-5xl mx-auto px-6 pt-10 pb-20 overflow-x-hidden" style="margin-top: 150px;">
+    <div id="mainContent" class="max-w-5xl mx-auto px-6 pt-24 pb-20 overflow-x-hidden">
 
         <section class="text-center mb-10" data-aos="zoom-out" data-aos-duration="1500">
             <div
@@ -720,11 +704,12 @@
                             </div>
                             <div class="border-t border-white/10 pt-4">
                                 <p class="text-neon-blue mb-1">■ オンライン決済（PayPay・コンビニ払い等）</p>
-                                <a href="#" target="_blank"
-                                    class="text-neon-gold underline hover:text-white transition flex items-center gap-2">
-                                    <i class="fas fa-external-link-alt"></i> お支払いはこちら（決済ページへ）
+                                <a href="https://paypay.me/YOUR_PAYPAY_LINK" target="_blank"
+                                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+                                    <i class="fas fa-qrcode"></i> PayPayでお支払い
                                 </a>
-                                <p class="text-xs text-gray-500 mt-1">※外部決済ページへ移動します</p>
+                                <p class="text-[10px] text-gray-500 mt-2 text-center">※PayPay for
+                                    Businessで発行した支払い用URLをここに設定してください</p>
                             </div>
                             <div
                                 class="mt-4 flex items-center justify-center gap-2 bg-neon-gold/10 p-3 rounded-lg border border-neon-gold/30">
@@ -809,6 +794,9 @@
         <div class="lightbox-hint">クリックして閉じる</div>
     </div>
 
+    <!-- Hidden Audio for BGM (Structural fix for compatibility) -->
+    <audio id="bgm" src="DoronparkFukutu.mp3" preload="auto" loop playsinline autoplay style="display:none;"></audio>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
@@ -816,6 +804,42 @@
             once: false,
             mirror: true
         });
+
+        // BGM再生の極めて強力な復旧処理
+        (function () {
+            const bgm = document.getElementById('bgm');
+            if (!bgm) return;
+
+            // 再生を試みる関数
+            const tryPlay = () => {
+                if (bgm.paused) {
+                    bgm.play().then(() => {
+                        console.log("BGM started successfully");
+                        removeListeners();
+                    }).catch(err => {
+                        // 自動再生がブロックされている場合は次の操作を待つ
+                        console.log("Waiting for user interaction...");
+                    });
+                } else {
+                    removeListeners();
+                }
+            };
+
+            const removeListeners = () => {
+                ['click', 'touchstart', 'keydown', 'mousemove', 'scroll'].forEach(evt => {
+                    document.removeEventListener(evt, tryPlay);
+                });
+            };
+
+            // あらゆるユーザー操作をトリガーに設定
+            ['click', 'touchstart', 'keydown', 'mousemove', 'scroll'].forEach(evt => {
+                document.addEventListener(evt, tryPlay, { once: true });
+            });
+
+            // 読み込み時に一度試行（Safariの個別設定で許可されている場合用）
+            window.addEventListener('load', tryPlay);
+            tryPlay();
+        })();
 
         function toggleSubmitButton() {
             const agreement = document.getElementById('agreement');
